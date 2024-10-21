@@ -14,12 +14,14 @@ const { authMiddleware } = require("./middlewares/authMiddleware");
 const configSettings = require("./utils/cloudinaryConfig");
 const app = express();
 const path = require("path");
+// const route = path.resolve(__dirname, "/public", "index.html");
+// console.log(route);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 app.use(express.json());
-app.use(express.static(path.resolve(__dirname, "./public")));
+app.use(express.static(path.resolve(__dirname, "/public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use("/api/v1/jobs", authMiddleware, jobRouter);
