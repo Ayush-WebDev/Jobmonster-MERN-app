@@ -14,14 +14,16 @@ const { authMiddleware } = require("./middlewares/authMiddleware");
 const configSettings = require("./utils/cloudinaryConfig");
 const app = express();
 const path = require("path");
+const url = require("url");
 // const route = path.resolve(__dirname, "/public", "index.html");
 // console.log(route);
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 app.use(express.json());
-app.use(express.static(path.resolve("../public", "index.html")));
+app.use(express.static(path.resolve(__dirname, "./public", "index.html")));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use("/api/v1/jobs", authMiddleware, jobRouter);
@@ -30,7 +32,7 @@ console.log(path.resolve("./public", "index.html"));
 
 // We place all the files from distt folder in our server's public folder and have a route for the all the pages and render index.html
 app.use("*", (req, res) => {
-  res.sendFile(path.resolve("../public", "index.html"));
+  res.sendFile(path.resolve(__dirname, "./public", "index.html"));
 });
 app.use(notFoundMiddleware, errorHandlerMiddleware);
 configSettings;
