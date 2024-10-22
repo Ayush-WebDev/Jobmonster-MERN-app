@@ -26,8 +26,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use("/api/v1/jobs", authMiddleware, jobRouter);
 app.use("/api/v1/auth", authRouter);
+console.log(path.resolve("./public", "index.html"));
+
 // We place all the files from distt folder in our server's public folder and have a route for the all the pages and render index.html
-app.use("*", mainRouter);
+app.use("*", (req, res) => {
+  res.sendFile(path.resolve("./public", "index.html"));
+});
 app.use(notFoundMiddleware, errorHandlerMiddleware);
 configSettings;
 const start = async () => {
